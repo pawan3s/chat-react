@@ -1,5 +1,4 @@
-import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useState } from "react";
 import Register_svg from "../../Assets/svg/register.svg";
 import "./Register.scss";
 import { Link } from "react-router-dom";
@@ -7,7 +6,7 @@ import Loader from "../../Components/Loader";
 import isEmail from "validator/lib/isEmail";
 
 //store
-import { login } from "../../Store/actions/userAction";
+import { register } from "../../Store/actions/userAction";
 import { clean } from "../../Store/actions/userAction";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -24,9 +23,9 @@ function SignUP() {
   });
 
   const dispatch = useDispatch();
-  const userLogin = useSelector((state) => state.userLogin);
+  const userRegister = useSelector((state) => state.userRegister);
 
-  const { loading, userInfo, error } = userLogin;
+  const { loading, error, message } = userRegister;
 
   const validate = () => {
     let usernameError = "";
@@ -57,10 +56,10 @@ function SignUP() {
     return true;
   };
 
-  const loginHandler = (e) => {
+  const registerHandler = (e) => {
     e.preventDefault();
     if (validate()) {
-      dispatch(login(email, password));
+      dispatch(register(email, username, password));
       setErrorState({
         usernameError: "",
         emailError: "",
@@ -70,38 +69,23 @@ function SignUP() {
     }
   };
 
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    if (userInfo) {
-      navigate("/home");
-    }
-  }, [userInfo, navigate]);
-
   const clearError = () => {
     dispatch(clean());
   };
   return (
-    <form className='base-container' noValidate onSubmit={loginHandler}>
-      <div className='header'>Register</div>
-      <div className='content'>
-        <div className='image'>
-          <img src={Register_svg} alt='register' />
-        </div>
-        <div className='form'>
-          <div className='form-group'>
-            <label htmlFor='email'>E-mail</label>
+    <div className='register__body'>
+      <div className='register__container'>
+        <h1>Sign Up</h1>
+        <div className='register__form'>
+          <form className='register-form' onSubmit={registerHandler}>
             <input
-              type='text'
+              type='email'
               name='email'
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder='E-mail'
             />
             <span>{errorState.emailError}</span>
-          </div>
-          <div className='form-group'>
-            <label htmlFor='username'>User-Name</label>
             <input
               type='text'
               name='UserName'
@@ -110,9 +94,6 @@ function SignUP() {
               placeholder='UserName'
             />
             <span>{errorState.usernameError}</span>
-          </div>
-          <div className='form-group'>
-            <label htmlFor='password'>Password</label>
             <input
               type='password'
               name='password'
@@ -121,9 +102,6 @@ function SignUP() {
               placeholder='password'
             />
             <span>{errorState.passwordError}</span>
-          </div>
-          <div className='form-group'>
-            <label htmlFor='password'> Confirm Password</label>
             <input
               type='password'
               name='password'
@@ -132,30 +110,32 @@ function SignUP() {
               placeholder='Confirm Passowrd'
             />
             <span>{errorState.matchpasswordError}</span>
-          </div>
-        </div>
-        <div className='already__registered'>
-          <Link className='registerUser float-left' to='/'>
-            Already a member?Login
-          </Link>
+            {loading ? (
+              <Loader />
+            ) : (
+              <button type='submit' className='register__btn'>
+                Register
+              </button>
+            )}
+            <p className='register__message'>
+              Already registered?<Link to='/'> Sign in</Link>
+            </p>
+          </form>
+          {message && (
+            <div className='register__success'>
+              <span>{message}</span>
+            </div>
+          )}
+          {error && (
+            <div className='register__error'>
+              <span>{error}</span>
+              <button onClick={clearError}>ok</button>
+            </div>
+          )}
         </div>
       </div>
-      {loading ? (
-        <Loader />
-      ) : (
-        <div className='footer'>
-          <button type='submit' className='btn'>
-            Register
-          </button>
-        </div>
-      )}
-      {error && (
-        <div className='error'>
-          <span>{error}</span>
-          <button onClick={clearError}>x</button>
-        </div>
-      )}
-    </form>
+      <img src={Register_svg} alt='register' />
+    </div>
   );
 }
 

@@ -45,13 +45,12 @@ export const register = (email, username, password) => async (dispatch) => {
       },
     };
 
-    const data = await api.post(
+    const response = await api.post(
       "/users/register",
       { email, username, password },
       config
     );
-
-    dispatch({ type: USER_REGISTER_SUCCESS, payload: data });
+    dispatch({ type: USER_REGISTER_SUCCESS, payload: response.data.msg });
   } catch (error) {
     dispatch({
       type: USER_REGISTER_FAIL,

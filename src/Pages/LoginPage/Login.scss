@@ -1,126 +1,105 @@
-.base-container {
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+@import url("https://fonts.googleapis.com/css?family=Roboto&display=swap");
 
-  .header {
-    font-size: 24px;
-    font-family: "Open Sans", sans-serif;
-    margin-bottom: 1rem;
-    margin-top: 2rem;
-    margin-right: 2rem;
+.login__body {
+  display: flex;
+  justify-content: center;
+  margin-top: 10rem;
+
+  @media (max-width: 426px) {
+    flex-direction: column;
+    gap: 1rem;
+    margin-top: 1px;
+    justify-content: flex-start;
   }
 
-  .content {
+  .login__container {
     display: flex;
     flex-direction: column;
-
-    .image {
-      width: 21em;
-      img {
-        width: 250px;
-        height: 150px;
-        border: 1px solid white;
-        border-radius: 20%;
-      }
+    align-items: center;
+    h1 {
+      text-decoration: underline;
     }
 
-    .form {
-      margin-top: 2em;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-
-      .form-group {
+    .login__form {
+      border-radius: 5px;
+      padding: 1rem;
+      background-color: rgba(245, 245, 247, 0.863);
+      .login-form {
         display: flex;
         flex-direction: column;
-        align-items: flex-start;
-        width: fit-content;
-        label {
-          font-size: 20px;
-        }
         input {
-          margin-top: 6px;
+          margin-top: 1.2rem;
           min-width: 18em;
           height: 37px;
           padding: 0px 10px;
           font-size: 16px;
           font-family: "Open Sans", sans-serif;
-          background-color: #f3f3f3;
+          background-color: #b5c8fd;
           border: 0;
           border-radius: 4px;
-          margin-bottom: 20px;
+          text-align: center;
+
           transition: all 250ms ease-in-out;
           &:hover {
-            background-color: #ffffff;
-            box-shadow: 0px 0px 14px 0.3px #0e81ce96;
+            background-color: #e0dfdf;
           }
 
           &:focus {
             outline: none;
-            box-shadow: 0px 0px 12px 0.8px #3474dbb2;
+          }
+        }
+        span {
+          color: rgb(153, 4, 4);
+          text-align: center;
+        }
+        .login__btn {
+          background-color: #252424;
+          border-radius: 4px;
+          color: white;
+          border: 0;
+          font-size: 16px;
+          padding: 10px 132px;
+          cursor: pointer;
+          margin-top: 1.2rem;
+          &:focus {
+            box-shadow: 0px 0px 12px 0.8px #3f3f3fb2;
+          }
+        }
+        .login__message {
+          text-align: center;
+          a {
+            text-decoration: none;
+            color: #00bfa5;
           }
         }
       }
-      span {
-        color: red;
-        margin-bottom: 1rem;
-        margin-top: 10px;
-      }
-    }
-    .Login-forgetRegister {
-      font-size: 0.9rem;
-      font-weight: bold;
-      margin-bottom: 1rem;
-      margin-top: 1rem;
-      line-height: 17px;
-      color: #575674;
-      padding-left: 4px;
-      .registerUser {
-        color: #575674;
-        margin-left: 5rem;
-        text-decoration: none;
-        &:hover {
-          color: #3d5caf;
-          text-decoration: underline;
+      .login__error {
+        color: rgb(22, 20, 20);
+        background-color: rgb(248, 143, 143);
+        border-radius: 4px;
+        padding: 5px 10px;
+        width: fit-content;
+        font-size: 12px;
+        margin-left: 3rem;
+        button {
+          color: rgb(114, 123, 240);
+          margin-left: 10px;
+          background-color: rgb(248, 143, 143);
+          border: none;
+          cursor: pointer;
+          border-radius: 4px;
+          &:hover {
+            color: rgb(247, 77, 77);
+          }
         }
       }
     }
   }
-
-  .login__footer {
-    .btn {
-      background-color: #3d5caf;
-      border-radius: 5px;
-      color: white;
-      border: 0;
-      font-size: 17px;
-      padding: 10px 132px;
-      cursor: pointer;
-      &:focus {
-        box-shadow: 0px 0px 12px 0.8px #0858dab2;
-      }
-    }
-  }
-  .login__error {
-    margin-top: 20px;
-    color: rgb(22, 20, 20);
-    background-color: rgb(248, 143, 143);
-    border-radius: 6px;
-    padding: 5px 15px;
-    border: 1px solid rgb(250, 98, 98);
-    button {
-      color: rgb(250, 98, 98);
-      margin-left: 10px;
-      background-color: rgb(248, 143, 143);
-      border: none;
-      cursor: pointer;
-      border-radius: 4px;
-
-      &:hover {
-        background-color: rgb(247, 77, 77);
-      }
+  img {
+    width: 400px;
+    height: auto;
+    @media (max-width: 426px) {
+      width: 300px;
     }
   }
 }

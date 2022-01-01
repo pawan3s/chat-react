@@ -53,15 +53,11 @@ function SignIn() {
     dispatch(clean());
   };
   return (
-    <form className='base-container' noValidate onSubmit={loginHandler}>
-      <div className='header'>Login</div>
-      <div className='content'>
-        <div className='image'>
-          <img src={login_svg} alt='login' />
-        </div>
-        <div className='form'>
-          <div className='form-group'>
-            <label htmlFor='email'>E-mail</label>
+    <div className='login__body'>
+      <div className='login__container'>
+        <h1>Sign In</h1>
+        <div className='login__form'>
+          <form className='login-form' onSubmit={loginHandler}>
             <input
               type='email'
               name='email'
@@ -70,9 +66,6 @@ function SignIn() {
               placeholder='E-mail'
             />
             <span>{emailError}</span>
-          </div>
-          <div className='form-group'>
-            <label htmlFor='password'>Password</label>
             <input
               type='password'
               name='password'
@@ -80,30 +73,27 @@ function SignIn() {
               onChange={(e) => setPassword(e.target.value)}
               placeholder='password'
             />
-          </div>
-        </div>
-        <div className='Login-forgetRegister'>
-          <Link className='registerUser float-left' to='/register'>
-            Not a member yet? Register
-          </Link>
+            {loading ? (
+              <Loader />
+            ) : (
+              <button type='submit' className='login__btn'>
+                Login
+              </button>
+            )}
+            <p className='login__message'>
+              Not registered yet?<Link to='/register'> Sign up</Link>
+            </p>
+          </form>
+          {error && (
+            <div className='login__error'>
+              <span>{error}</span>
+              <button onClick={clearError}>ok</button>
+            </div>
+          )}
         </div>
       </div>
-      {loading ? (
-        <Loader />
-      ) : (
-        <div className='login__footer'>
-          <button type='submit' className='btn'>
-            Login
-          </button>
-        </div>
-      )}
-      {error && (
-        <div className='login__error'>
-          <span>{error}</span>
-          <button onClick={clearError}>x</button>
-        </div>
-      )}
-    </form>
+      <img src={login_svg} alt='login' />
+    </div>
   );
 }
 

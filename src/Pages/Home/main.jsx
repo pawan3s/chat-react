@@ -1,15 +1,20 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 function Main() {
+  const navigate = useNavigate();
   const logout = () => {
     localStorage.removeItem("userInfo");
   };
 
-  // console.log(userInfo);
-  // useEffect(() => {
+  const userInfo = localStorage.getItem("userInfo");
 
-  // }, [userInfo, navigate]);
+  useEffect(() => {
+    if (!userInfo) {
+      navigate("/");
+    }
+  }, [userInfo, navigate]);
 
   return (
     <div>
