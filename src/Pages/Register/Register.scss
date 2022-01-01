@@ -9,7 +9,7 @@
     font-family: "Open Sans", sans-serif;
     margin-bottom: 1rem;
     margin-top: 2rem;
-    margin-right: 2rem;
+    margin-right: 5rem;
   }
 
   .content {
@@ -50,7 +50,7 @@
           background-color: #f3f3f3;
           border: 0;
           border-radius: 4px;
-          margin-bottom: 20px;
+          margin-bottom: 1px;
           transition: all 250ms ease-in-out;
           &:hover {
             background-color: #ffffff;
@@ -69,11 +69,10 @@
         margin-top: 10px;
       }
     }
-    .Login-forgetRegister {
+    .already__registered {
       font-size: 0.9rem;
       font-weight: bold;
       margin-bottom: 1rem;
-      margin-top: 1rem;
       line-height: 17px;
       color: #575674;
       padding-left: 4px;
@@ -89,7 +88,7 @@
     }
   }
 
-  .login__footer {
+  .footer {
     .btn {
       background-color: #3d5caf;
       border-radius: 5px;
@@ -97,24 +96,25 @@
       border: 0;
       font-size: 17px;
       padding: 10px 132px;
+      margin-bottom: 3rem;
       cursor: pointer;
       &:focus {
         box-shadow: 0px 0px 12px 0.8px #0858dab2;
       }
     }
   }
-  .login__error {
-    margin-top: 20px;
+  .error {
+    margin-top: 1.5rem;
     color: rgb(22, 20, 20);
     background-color: rgb(248, 143, 143);
     border-radius: 6px;
-    padding: 5px 15px;
+    padding: 15px 20px;
     border: 1px solid rgb(250, 98, 98);
     button {
       color: rgb(250, 98, 98);
-      margin-left: 10px;
+      margin-left: 1rem;
       background-color: rgb(248, 143, 143);
-      border: none;
+      border: 1px solid rgb(250, 98, 98);
       cursor: pointer;
       border-radius: 4px;
 
