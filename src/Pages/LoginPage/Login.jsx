@@ -55,7 +55,13 @@ function SignIn() {
   return (
     <div className='login__body'>
       <div className='login__container'>
-        <h1>Sign In</h1>
+        {error && (
+          <div className='login__error'>
+            <span>{error}</span>
+            <button onClick={clearError}>ok</button>
+          </div>
+        )}
+        <h1>Sign in</h1>
         <div className='login__form'>
           <form className='login-form' onSubmit={loginHandler}>
             <input
@@ -84,12 +90,6 @@ function SignIn() {
               Not registered yet?<Link to='/register'> Sign up</Link>
             </p>
           </form>
-          {error && (
-            <div className='login__error'>
-              <span>{error}</span>
-              <button onClick={clearError}>ok</button>
-            </div>
-          )}
         </div>
       </div>
       <img src={login_svg} alt='login' />

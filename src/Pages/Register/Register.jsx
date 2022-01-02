@@ -75,7 +75,18 @@ function SignUP() {
   return (
     <div className='register__body'>
       <div className='register__container'>
-        <h1>Sign Up</h1>
+        {error && (
+          <div className='register__error'>
+            <span>{error}</span>
+            <button onClick={clearError}>ok</button>
+          </div>
+        )}
+        {message && (
+          <div className='register__success'>
+            <span>{message}</span>
+          </div>
+        )}
+        <h1>Sign up</h1>
         <div className='register__form'>
           <form className='register-form' onSubmit={registerHandler}>
             <input
@@ -121,17 +132,6 @@ function SignUP() {
               Already registered?<Link to='/'> Sign in</Link>
             </p>
           </form>
-          {message && (
-            <div className='register__success'>
-              <span>{message}</span>
-            </div>
-          )}
-          {error && (
-            <div className='register__error'>
-              <span>{error}</span>
-              <button onClick={clearError}>ok</button>
-            </div>
-          )}
         </div>
       </div>
       <img src={Register_svg} alt='register' />
