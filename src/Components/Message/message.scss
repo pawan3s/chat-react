@@ -1,0 +1,27 @@
+.message {
+  display: flex;
+  flex-direction: column;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  margin-left: 1rem;
+
+  .messageText {
+    padding: 5px 8px;
+    border-radius: 20px;
+    background-color: #d4d4d4;
+    max-width: 300px;
+    font-family: "PT Sans", sans-serif;
+  }
+}
+
+.message.own {
+  align-items: flex-end;
+  margin-right: 1rem;
+  .messageText {
+    padding: 10px;
+    border-radius: 20px;
+    background-color: #caf3c5;
+    max-width: 300px;
+    font-family: "PT Sans", sans-serif;
+  }
+}

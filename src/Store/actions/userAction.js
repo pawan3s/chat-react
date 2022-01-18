@@ -24,7 +24,7 @@ export const login = (email, password) => async (dispatch) => {
 
     dispatch({ type: USER_LOGIN_SUCCESS, payload: data });
 
-    localStorage.setItem("userInfo", JSON.stringify(data.data));
+    localStorage.setItem("userInfo", JSON.stringify(data.data.token));
   } catch (error) {
     dispatch({
       type: USER_LOGIN_FAIL,
@@ -36,31 +36,32 @@ export const login = (email, password) => async (dispatch) => {
   }
 };
 
-export const register = (email, username, password) => async (dispatch) => {
-  try {
-    dispatch({ type: USER_REGISTER_REQUEST });
-    const config = {
-      headers: {
-        "Content-Type": "application/json",
-      },
-    };
+export const register =
+  (email, username, password, full_Name) => async (dispatch) => {
+    try {
+      dispatch({ type: USER_REGISTER_REQUEST });
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      };
 
-    const response = await api.post(
-      "/users/register",
-      { email, username, password },
-      config
-    );
-    dispatch({ type: USER_REGISTER_SUCCESS, payload: response.data.msg });
-  } catch (error) {
-    dispatch({
-      type: USER_REGISTER_FAIL,
-      payload:
-        error.response && error.response.data.error
-          ? error.response.data.error
-          : error.message,
-    });
-  }
-};
+      const response = await api.post(
+        "/users/register",
+        { email, username, password, full_Name },
+        config
+      );
+      dispatch({ type: USER_REGISTER_SUCCESS, payload: response.data.msg });
+    } catch (error) {
+      dispatch({
+        type: USER_REGISTER_FAIL,
+        payload:
+          error.response && error.response.data.error
+            ? error.response.data.error
+            : error.message,
+      });
+    }
+  };
 
 export const logout = () => (dispatch) => {
   localStorage.removeItem("userInfo");

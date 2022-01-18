@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import login_svg from "../../Assets/svg/login.svg";
 import "./Login.scss";
 import { Link } from "react-router-dom";
-import Loader from "../../Components/Loader";
+import Loader from "../../Components/Loader/Loader";
 
 //store
 import { login } from "../../Store/actions/userAction";
@@ -12,6 +12,7 @@ import { useDispatch, useSelector } from "react-redux";
 import isEmail from "validator/lib/isEmail";
 
 function SignIn() {
+  const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [emailError, setEmailError] = useState("");
@@ -41,11 +42,9 @@ function SignIn() {
     }
   };
 
-  const navigate = useNavigate();
-
   useEffect(() => {
     if (userInfo) {
-      navigate("/home");
+      navigate(`/main`);
     }
   }, [userInfo, navigate]);
 

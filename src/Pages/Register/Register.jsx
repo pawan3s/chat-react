@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Register_svg from "../../Assets/svg/register.svg";
 import "./Register.scss";
 import { Link } from "react-router-dom";
-import Loader from "../../Components/Loader";
+import Loader from "../../Components/Loader/Loader";
 import isEmail from "validator/lib/isEmail";
 
 //store
@@ -12,11 +12,13 @@ import { useDispatch, useSelector } from "react-redux";
 
 function SignUP() {
   const [username, setUsername] = useState("");
+  const [full_Name, setFull_Name] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConformPassword] = useState("");
   const [errorState, setErrorState] = useState({
     usernameError: "",
+    fullnameError: "",
     emailError: "",
     passwordError: "",
     matchpasswordError: "",
@@ -29,9 +31,13 @@ function SignUP() {
 
   const validate = () => {
     let usernameError = "";
+    let fullnameError = "";
     let emailError = "";
     let passwordError = "";
     let matchpasswordError = "";
+    if (!full_Name) {
+      fullnameError = "Full Name is required";
+    }
     if (!username) {
       usernameError = "Username is required";
     }
@@ -44,12 +50,19 @@ function SignUP() {
     if (password !== confirmPassword) {
       matchpasswordError = "Passowrd didnot match";
     }
-    if (emailError || usernameError || passwordError || matchpasswordError) {
+    if (
+      emailError ||
+      usernameError ||
+      passwordError ||
+      matchpasswordError ||
+      fullnameError
+    ) {
       setErrorState({
         usernameError,
         emailError,
         passwordError,
         matchpasswordError,
+        fullnameError,
       });
       return false;
     }
@@ -59,9 +72,10 @@ function SignUP() {
   const registerHandler = (e) => {
     e.preventDefault();
     if (validate()) {
-      dispatch(register(email, username, password));
+      dispatch(register(email, username, password, full_Name));
       setErrorState({
         usernameError: "",
+        fullnameError: "",
         emailError: "",
         passwordError: "",
         matchpasswordError: "",
@@ -89,6 +103,14 @@ function SignUP() {
         <h1>Sign up</h1>
         <div className='register__form'>
           <form className='register-form' onSubmit={registerHandler}>
+            <input
+              type='text'
+              name='fullname'
+              value={full_Name}
+              onChange={(e) => setFull_Name(e.target.value)}
+              placeholder='Full Name'
+            />
+            <span>{errorState.fullnameError}</span>
             <input
               type='email'
               name='email'
