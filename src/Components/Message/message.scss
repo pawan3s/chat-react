@@ -4,24 +4,41 @@
   margin-top: 10px;
   margin-bottom: 10px;
   margin-left: 1rem;
+  @media (max-width: 768px) {
+    margin-top: 5px;
+    margin-bottom: 5px;
+    margin-left: 0.5rem;
+  }
 
   .messageText {
     padding: 5px 8px;
     border-radius: 20px;
     background-color: #d4d4d4;
+    width: fit-content;
     max-width: 300px;
     font-family: "PT Sans", sans-serif;
+    @media (max-width: 768px) {
+      font-size: 12px;
+    }
   }
 }
 
 .message.own {
   align-items: flex-end;
   margin-right: 1rem;
+  @media (max-width: 768px) {
+    margin-top: 5px;
+    margin-bottom: 5px;
+    margin-left: 0.5rem;
+  }
   .messageText {
-    padding: 10px;
+    padding: 5px 8px;
     border-radius: 20px;
     background-color: #caf3c5;
     max-width: 300px;
     font-family: "PT Sans", sans-serif;
+    @media (max-width: 768px) {
+      font-size: 12px;
+    }
   }
 }

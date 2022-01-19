@@ -27,7 +27,13 @@ function Conversation({ conversation, myId, setCurrentChat, setChatHeading }) {
 
   return (
     <div className='conversation' onClick={changeSates}>
-      <img className='conversationImg' src={user?.profilePicture} alt='user' />
+      <img
+        draggable='false'
+        className='conversationImg'
+        src={user?.profilePicture}
+        alt='user'
+      />
+      <div className='online'></div>
       <span className='conversationName'>{user?.full_Name}</span>
     </div>
   );

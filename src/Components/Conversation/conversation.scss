@@ -4,9 +4,21 @@
   padding: 5px;
   cursor: pointer;
   margin-top: 5px;
+  position: relative;
+
   &:hover {
-    background-color: rgb(245, 243, 243);
+    background-color: rgb(241, 240, 240);
     border-radius: 12px;
+  }
+  .online {
+    height: 10px;
+    width: 10px;
+    left: 15%;
+    bottom: 15%;
+    border: 0.5px solid white;
+    position: absolute;
+    border-radius: 50%;
+    background-color: rgb(70, 230, 70);
   }
   .conversationImg {
     width: 50px;
@@ -17,5 +29,8 @@
   }
   .conversationName {
     font-family: "PT Sans", sans-serif;
+    @media (max-width: 768px) {
+      display: none;
+    }
   }
 }

@@ -17,9 +17,11 @@ body {
     border-radius: 10px;
     width: 310px;
     box-shadow: #a0d9b1 0px 3px 8px;
-    // @media (max-width: 768px) {
-    //   display: none;
-    // }
+    @media (max-width: 768px) {
+      flex-direction: row;
+      width: 100%;
+      align-items: center;
+    }
     .profile__area {
       display: flex;
       flex-direction: column;
@@ -28,12 +30,19 @@ body {
       border-radius: 10px;
       width: 300px;
       background-color: #a0d9b1;
+      @media (max-width: 768px) {
+        width: 100px;
+      }
 
       .user__img {
         margin-top: 5px;
         border-radius: 50%;
         width: 100px;
         height: 90px;
+        @media (max-width: 768px) {
+          width: 60px;
+          height: 60px;
+        }
       }
       .picture {
         position: relative;
@@ -47,6 +56,12 @@ body {
         padding: 2px 4px;
         background-color: #a0d9b1;
         border-radius: 50%;
+        @media (max-width: 768px) {
+          bottom: -4px;
+          left: 50%;
+          padding: 0px 2px;
+          background-color: white;
+        }
 
         &:hover {
           background-color: #e9e9e9;
@@ -64,10 +79,17 @@ body {
         margin-top: 10px;
         color: black;
         font-family: "PT Sans", sans-serif;
+        @media (max-width: 768px) {
+          font-size: 10px;
+          margin-top: 8px;
+        }
       }
       .user__em {
         color: gray;
         font-family: "PT Sans", sans-serif;
+        @media (max-width: 768px) {
+          display: none;
+        }
       }
       .logout {
         margin: 5px 0px;
@@ -75,6 +97,10 @@ body {
         padding: 4px 15px;
         border: none;
         border-radius: 5px;
+        @media (max-width: 768px) {
+          padding: 1px 5px;
+          font-size: 10px;
+        }
         cursor: pointer;
         color: gray;
         font-family: "PT Sans", sans-serif;
@@ -83,10 +109,13 @@ body {
 
     .conversation__list__area {
       margin-top: 0.5rem;
-      // background-color: #caf3c5;
-
       width: 300px;
       margin-bottom: 0.5rem;
+      @media (max-width: 768px) {
+        margin-top: 0.1rem;
+        margin-left: 8px;
+        width: 85%;
+      }
       // .search__field {
       //   border-radius: 18px;
       //   margin: 10px;
@@ -100,6 +129,13 @@ body {
         height: 500px;
         border-radius: 10px;
         overflow-y: scroll;
+        @media (max-width: 768px) {
+          display: flex;
+          height: 115px;
+          overflow-x: scroll;
+          overflow-y: hidden;
+          margin-top: 0.5rem;
+        }
       }
     }
   }
@@ -112,7 +148,7 @@ body {
     border-radius: 12px;
     position: relative;
     @media (max-width: 768px) {
-      margin: 0.5rem 1rem;
+      margin: 0.5rem 0rem;
     }
     .chat__header {
       background-color: #a0d9b1;
@@ -121,7 +157,8 @@ body {
       border-top-left-radius: 12px;
       border-top-right-radius: 12px;
       @media (max-width: 768px) {
-        width: 90vw;
+        font-size: 10px;
+        height: 30px;
       }
 
       h3 {
@@ -133,8 +170,14 @@ body {
     .chat__area__content {
       overflow-y: scroll;
       height: 619px;
+      width: auto;
       margin-left: 1rem;
       margin-top: 0.15rem;
+      @media (max-width: 768px) {
+        height: 390px;
+        margin-left: 0.1px;
+        margin-top: 0.15rem;
+      }
     }
     .input__field__footer {
       background-color: #a0d9b1;
@@ -147,6 +190,9 @@ body {
       justify-content: center;
       align-items: center;
       font-family: "PT Sans", sans-serif;
+      @media (max-width: 768px) {
+        height: 40px;
+      }
 
       input {
         padding: 10px 15px;
@@ -155,6 +201,10 @@ body {
         width: 80%;
         background-color: rgb(255, 255, 255);
         font-family: "PT Sans", sans-serif;
+        @media (max-width: 768px) {
+          padding: 8px 15px;
+          margin: 5px;
+        }
         &:focus {
           outline: none;
         }
@@ -164,16 +214,24 @@ body {
         background-color: transparent;
         cursor: pointer;
         margin-left: 5px;
+        @media (max-width: 768px) {
+          margin-right: 5px;
+        }
       }
     }
     .noCurrentChat {
       position: absolute;
-      top: 10%;
-      font-size: 50px;
+      top: 40%;
+      font-size: 40px;
       color: rgb(224, 220, 220);
       margin-left: 1rem;
+      bottom: 50%;
       cursor: default;
       font-family: "PT Sans", sans-serif;
+      @media (max-width: 768px) {
+        font-size: 15px;
+        padding: 2px;
+      }
     }
   }
   .users__container__main {
@@ -183,6 +241,10 @@ body {
     border-radius: 10px;
     width: 310px;
     box-shadow: #a0d9b1 0px 3px 8px;
+    @media (max-width: 768px) {
+      width: 100%;
+      align-items: flex-start;
+    }
     .all__users {
       background-color: #a0d9b1;
       width: 96%;
@@ -192,6 +254,9 @@ body {
       text-align: center;
       font-weight: bold;
       font-family: "PT Sans", sans-serif;
+      @media (max-width: 768px) {
+        display: none;
+      }
     }
     .user__list {
       margin-top: 0.5rem;
@@ -201,28 +266,46 @@ body {
       overflow-y: scroll;
       width: 300px;
       margin-bottom: 0.5rem;
+      @media (max-width: 768px) {
+        height: auto;
+        display: flex;
+        overflow-x: scroll;
+        overflow-y: hidden;
+        margin-top: 0.1rem;
+        margin-bottom: 0.1rem;
+        background-color: white;
+      }
 
       .user {
         display: flex;
-        flex: 2;
         align-items: center;
         padding: 5px;
         cursor: pointer;
         margin-top: 5px;
+        @media (max-width: 768px) {
+          align-items: center;
+          padding: 1px;
+        }
         &:hover {
           background-color: rgb(245, 243, 243);
           border-radius: 12px;
         }
 
         img {
-          height: 50px;
+          height: 45px;
           width: 50px;
           border-radius: 50%;
           margin-right: 10px;
+          @media (max-width: 768px) {
+            margin-right: 1px;
+          }
         }
         span {
           font-size: 16px;
           font-family: "PT Sans", sans-serif;
+          @media (max-width: 768px) {
+            display: none;
+          }
         }
       }
     }
@@ -231,6 +314,9 @@ body {
 
 ::-webkit-scrollbar {
   width: 5px;
+  @media (max-width: 768px) {
+    height: 4px;
+  }
 }
 
 /* Track */
@@ -240,7 +326,7 @@ body {
 
 /* Handle */
 ::-webkit-scrollbar-thumb {
-  background: #888;
+  background: rgb(231, 226, 226);
   border-radius: 12px;
 }
 
@@ -248,3 +334,36 @@ body {
 ::-webkit-scrollbar-thumb:hover {
   background: #555;
 }
+// .box {
+//   position: absolute;
+//   top: 50%;
+//   left: 50%;
+//   transform: translate(-50%, -50%);
+//   width: 300px;
+//   height: 150px;
+//   background-color: rgb(161, 233, 161);
+//   border: 1px solid #000;
+//   border-radius: 12px;
+//   box-shadow: 24;
+//   h2 {
+//     text-align: center;
+//     color: rgb(94, 94, 94);
+//     border-bottom: 1px solid gray;
+//     margin-bottom: 5px;
+//   }
+//   p {
+//     text-align: center;
+//     color: rgb(94, 94, 94);
+//   }
+//   .action {
+//     display: flex;
+//     align-items: center;
+//     gap: 1rem;
+//     justify-content: center;
+//     .MuiButton-root {
+//       background-color: rgb(224, 221, 221);
+//       padding: 2px;
+//       color: rgb(94, 94, 94);
+//     }
+//   }
+// }

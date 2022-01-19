@@ -4,26 +4,35 @@ import icon from "../../Assets/svg/camera.svg";
 import loop from "../../Assets/svg/loop.svg";
 import send from "../../Assets/svg/send.svg";
 import { useNavigate } from "react-router";
-// import messages from "./message.json";
 import Message from "../../Components/Message/Message";
 import Loader from "../../Components/Loader/Loader";
-
+// import Button from "@mui/material/Button";
+// import Modal from "@mui/material/Modal";
 import "./Profile.scss";
 
 import baseURL from "../../api/baseURL";
 import axios from "axios";
 import Conversation from "../../Components/Conversation/Conversation";
 import { useRef } from "react";
+import { io } from "socket.io-client";
 
 export default function Profile() {
+  // const [open, setOpen] = useState(false);
+  // const [confrimChat, setConfrimChat] = useState(false);
   const navigate = useNavigate();
   const [updating, setUpdating] = useState(false);
   const [newMessage, setNewMessage] = useState("");
+  const [arrivalMessage, setArrivalMessage] = useState(null);
   const [userData, setUserData] = useState({});
   const [friendList, setFriendList] = useState([]);
+  const [onlineFriendList, setOnlineFriendList] = useState([]);
   const [conversations, setConversations] = useState([]);
   const [messages, setMessages] = useState([]);
   const [currentChat, setCurrentChat] = useState(null);
+  const [strangers, setStrangers] = useState([]);
+
+  const socket = useRef();
+
   const [chatHeading, setChatHeading] = useState("");
   const [fethching, setFetching] = useState(false);
   const scrollRef = useRef();
@@ -32,6 +41,31 @@ export default function Profile() {
     atob(localStorage.getItem("userInfo").split(".")[1])
   ).id;
 
+  //socket
+  useEffect(() => {
+    socket.current = io("ws://localhost:8000");
+    socket.current.on("getMessage", (data) => {
+      setArrivalMessage({
+        user: data.senderId,
+        message: data.message,
+      });
+    });
+  }, []);
+
+  useEffect(() => {
+    arrivalMessage && currentChat?.members.includes(arrivalMessage.user);
+    setMessages((prev) => [...prev, arrivalMessage]);
+  }, [arrivalMessage, currentChat]);
+  useEffect(() => {
+    socket.current.emit("addUser", id);
+    socket.current.on("getUsers", (users) => {
+      setOnlineFriendList(
+        friendList.filter((f) => users.some((u) => u.userId === f._id))
+      );
+    });
+  }, [id]);
+  // console.log(onlineFriendList);
+  //fetch activities
   useEffect(() => {
     if (localStorage.getItem("userInfo") === null) {
       navigate(`/`);
@@ -99,6 +133,18 @@ export default function Profile() {
     };
     getMessages();
   }, [currentChat]);
+
+  useEffect(() => {
+    // const friendId = conversation.members.find((user) => user !== myId);
+
+    const convId = [];
+    conversations.forEach((element) => {
+      element.members.filter((m) => convId.push(m));
+    });
+    const finalId = convId.filter((m) => m !== id);
+    setStrangers(friendList.filter((f) => !finalId.includes(f._id)));
+  }, [conversations, id, friendList]);
+
   const updateProfile = async (e) => {
     if (!e.target.files.length) return;
     setUpdating(true);
@@ -125,13 +171,44 @@ export default function Profile() {
       user: id,
       message: newMessage,
     };
-    try {
-      const { data } = await axios.post(baseURL + "/messages", message, {
-        headers: { Authorization: "Bearer " + token },
+    if (newMessage !== "") {
+      const receiverId = currentChat.members.find((member) => member !== id);
+      socket.current.emit("sendMessage", {
+        senderId: id,
+        receiverId: receiverId,
+        message: newMessage,
       });
-      setMessages([...messages, data.message]);
-      setNewMessage("");
-    } catch (error) {}
+      try {
+        const { data } = await axios.post(baseURL + "/messages", message, {
+          headers: { Authorization: "Bearer " + token },
+        });
+        setMessages([...messages, data.message]);
+        setNewMessage("");
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  };
+
+  const createChat = async (receiveId) => {
+    // setOpen(true);
+    const token = JSON.parse(localStorage.getItem("userInfo"));
+    const conversation = {
+      senderId: id,
+      receiverId: receiveId,
+    };
+    try {
+      const { data } = await axios.post(
+        baseURL + "/conversations",
+        conversation,
+        {
+          headers: { Authorization: "Bearer " + token },
+        }
+      );
+      setConversations([...conversations, data.newConversation]);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   useEffect(() => {
@@ -145,10 +222,12 @@ export default function Profile() {
   return (
     <div className='Profile__container'>
       {/* @section => main content */}
+
       <div className='Profile__container__main__userimage'>
         <div className='profile__area'>
           <div className='picture'>
             <img
+              draggable='false'
               className='user__img'
               alt='user'
               src={userData.profilePicture ? userData.profilePicture : image}
@@ -192,7 +271,7 @@ export default function Profile() {
           /> */}
           <div className='conversation__list'>
             {conversations.map((c, index) => (
-              <div>
+              <div key={index}>
                 <Conversation
                   conversation={c}
                   myId={id}
@@ -204,6 +283,7 @@ export default function Profile() {
           </div>
         </div>
       </div>
+
       <div className='chat__area'>
         {currentChat ? (
           <>
@@ -243,16 +323,30 @@ export default function Profile() {
       </div>
       {/* allusers */}
       <div className='users__container__main'>
-        <span className='all__users'>Start New Chat</span>
+        <span className='all__users'>Stranger Friends</span>
         <div className='user__list'>
-          {friendList.map((friend, index) => (
-            <div className='user' key={index}>
-              <img src={friend.profilePicture} alt='friend' />{" "}
+          {strangers.map((friend, index) => (
+            <div
+              className='user'
+              key={index}
+              onClick={() => createChat(friend._id)}
+            >
+              <img draggable='false' src={friend.profilePicture} alt='friend' />
               <span>{friend.full_Name}</span>
             </div>
           ))}
         </div>
       </div>
+      {/* <Modal open={open} onClose={() => setOpen(false)}>
+        <div className='box'>
+          <h2>Confirmation</h2>
+          <p>Do you want to add this user as friend?</p>
+          <div className='action'>
+            <Button onClick={() => setConfrimChat(true)}>yes</Button>
+            <Button onClick={() => setOpen(false)}>No</Button>
+          </div>
+        </div>
+      </Modal> */}
       {/* allusers end */}
     </div>
   );
