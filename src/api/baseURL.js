@@ -1,3 +1,3 @@
-let baseURL = "http://localhost:5000/api/v1";
+let baseURL = "https://chat29-api.herokuapp.com/api/v1";
 
 export default baseURL;

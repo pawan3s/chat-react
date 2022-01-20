@@ -43,7 +43,8 @@ export default function Profile() {
 
   //socket
   useEffect(() => {
-    socket.current = io("ws://localhost:8000");
+    // socket.current = io("http://localhost:5000");
+    socket.current = io("https://chat29-api.herokuapp.com");
     socket.current.on("getMessage", (data) => {
       setArrivalMessage({
         user: data.senderId,
