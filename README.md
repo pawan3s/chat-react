@@ -1,6 +1,5 @@
-# Getting Started with Create React App
+### View the live demo here [Demo](https://faith-chat-9620f.web.app)
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
 
