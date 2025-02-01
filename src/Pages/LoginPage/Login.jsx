@@ -44,7 +44,7 @@ function SignIn() {
 
   useEffect(() => {
     if (userInfo) {
-      navigate(`/main`);
+      navigate(`/confirm`);
     }
   }, [userInfo, navigate]);
 

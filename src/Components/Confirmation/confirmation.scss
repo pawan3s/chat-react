@@ -1,0 +1,134 @@
+.valentine-container {
+    background-color: #ffc0cb;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+  
+    &::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: url('../../Assets/valentine.jpg') repeat;
+      opacity: 0.2;
+      z-index: -1;
+    }
+  }
+  
+  .valentine-header {
+    margin-bottom: 20px;
+    animation:infinite 3s fadeIn;
+  
+    .animated-text {
+      font-size: 36px;
+      color: #d0006f;
+      text-align: center;
+      font-family: 'Pacifico', cursive;
+      text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+    }
+  }
+  .cat__confrimation{
+    height: 200px;
+    width: auto;
+    border-radius: 10px;
+
+  }
+  
+  .valentine-body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  
+    .valentine-question {
+      font-size: 24px;
+      color: #d0006f;
+      text-align: center;
+      margin-bottom: 20px;
+      font-family: 'Roboto', sans-serif;
+    }
+  
+    .valentine-form {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+  
+      .valentine-input {
+        padding: 10px;
+        border: 2px solid #ff69b4;
+        border-radius: 8px;
+        margin-bottom: 10px;
+        font-size: 16px;
+        font-family: 'Roboto', sans-serif;
+        width: 250px;
+  
+        &:focus {
+          outline: none;
+          border-color: #d0006f;
+          box-shadow: 0 0 5px rgba(208, 0, 111, 0.5);
+        }
+      }
+      .valentine__hint{
+        font-size: 15px;
+        color: #d0006f;
+        text-align: center;
+        margin-bottom: 20px;
+        font-family: 'Roboto', sans-serif;
+      }
+  
+      .valentine-button {
+        background-color: #ff69b4;
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 8px;
+        font-size: 16px;
+        cursor: pointer;
+        font-family: 'Roboto', sans-serif;
+        transition: background-color 0.3s;
+  
+        &:hover {
+          background-color: #d0006f;
+        }
+        .bouncing-heart {
+            animation: bounce 1s infinite;
+          }
+      }
+      .bouncing-heart {
+        font-size: 40px;
+        color: #ff69b4;
+        margin-top: 20px;
+        display: inline-block;
+        animation: bounce 3s infinite;
+      }
+    }
+  }
+  
+  @keyframes fadeIn {
+    0% {
+      opacity: 0;
+      transform: translateY(-20px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  @keyframes bounce {
+    0%, 20%, 50%, 80%, 100% {
+      transform: translateY(0);
+    }
+    40% {
+      transform: translateY(-50px);
+    }
+    60% {
+      transform: translateY(-50px);
+    }
+  }

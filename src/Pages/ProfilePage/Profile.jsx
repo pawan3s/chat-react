@@ -10,6 +10,10 @@ import Loader from "../../Components/Loader/Loader";
 // import Modal from "@mui/material/Modal";
 import "./Profile.scss";
 
+//emojis
+import Picker from '@emoji-mart/react'
+
+
 import baseURL from "../../api/baseURL";
 import axios from "axios";
 import Conversation from "../../Components/Conversation/Conversation";
@@ -37,14 +41,19 @@ export default function Profile() {
   const [fethching, setFetching] = useState(false);
   const scrollRef = useRef();
 
+  const [showPicker, setShowPicker] = useState(false);
   const id = JSON.parse(
     atob(localStorage.getItem("userInfo").split(".")[1])
   ).id;
 
+  const handleEmojiSelect = (emoji) => {
+    setNewMessage((prev) => prev + emoji.native); // Append emoji to the message
+  };
+
   //socket
   useEffect(() => {
-    // socket.current = io("http://localhost:5000");
-    socket.current = io("https://chat29-api.herokuapp.com");
+    socket.current = io("http://3.87.12.145:5000");
+    // socket.current = io("https://chat29-api.herokuapp.com");
     socket.current.on("getMessage", (data) => {
       setArrivalMessage({
         user: data.senderId,
@@ -71,6 +80,7 @@ export default function Profile() {
     if (localStorage.getItem("userInfo") === null) {
       navigate(`/`);
     }
+    localStorage.removeItem("temp");
   }, [navigate]);
   useEffect(() => {
     const fetchMe = async () => {
@@ -219,8 +229,30 @@ export default function Profile() {
   const logout = () => {
     localStorage.removeItem("userInfo");
   };
+  const pickerRef = useRef(null); 
+  const handleClickOutside = (event) => {
+    if (pickerRef.current && !pickerRef.current.contains(event.target)) {
+      setShowPicker(false); // Close the picker if clicked outside
+    }
+  };
+
+  useEffect(() => {
+    if (showPicker) {
+      document.addEventListener("mousedown", handleClickOutside);
+    } else {
+      document.removeEventListener("mousedown", handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [showPicker]);
 
   return (
+    <div className='main__container'>
+      {/* <header className="header">
+        <img src="faith.png" alt="Faith" className="header-image" />
+      </header> */}
     <div className='Profile__container'>
       {/* @section => main content */}
 
@@ -270,6 +302,7 @@ export default function Profile() {
             placeholder='Search for friends'
             className='search__field'
           /> */}
+          <span className='your__valentine'>Your Valentines</span>
           <div className='conversation__list'>
             {conversations.map((c, index) => (
               <div key={index}>
@@ -310,6 +343,22 @@ export default function Profile() {
                   value={newMessage}
                   onChange={(e) => setNewMessage(e.target.value)}
                 />
+                <div className='emoji__container' ref={pickerRef}>
+                  <button 
+                    className='emoji-button' 
+                    onClick={(e) => {
+                      e.preventDefault();
+                      setShowPicker((prev) => !prev)
+                    }}>
+                      😊
+                    </button>
+                  {showPicker && (
+                    <div className="emoji-picker">
+                      <Picker onEmojiSelect={handleEmojiSelect} />
+                    </div>
+                  )}
+                </div>
+                
                 <button className='send' type='submit'>
                   <img src={send} alt='send' />
                 </button>
@@ -318,11 +367,13 @@ export default function Profile() {
           </>
         ) : (
           <span className='noCurrentChat'>
-            Open a Conversation to start chatting
+            {/* Open a Conversation to start chatting */}
+            <img className="cat" src = "https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExZXlrdzltbHkwMnlsYXhuczNhOXAydGJnMnFuaGVmc2hpOGxqMXY1cCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/OW8JhCRLHuwNsctz5s/giphy.gif"/>
           </span>
         )}
       </div>
       {/* allusers */}
+      {strangers.length > 0 && (
       <div className='users__container__main'>
         <span className='all__users'>Stranger Friends</span>
         <div className='user__list'>
@@ -338,17 +389,14 @@ export default function Profile() {
           ))}
         </div>
       </div>
-      {/* <Modal open={open} onClose={() => setOpen(false)}>
-        <div className='box'>
-          <h2>Confirmation</h2>
-          <p>Do you want to add this user as friend?</p>
-          <div className='action'>
-            <Button onClick={() => setConfrimChat(true)}>yes</Button>
-            <Button onClick={() => setOpen(false)}>No</Button>
-          </div>
-        </div>
-      </Modal> */}
-      {/* allusers end */}
+      )}
+    </div>
+    <footer className='footer'>
+    <p>© 2025 ChatApp. All rights reserved.</p>
+    <p>
+      Built with ❤️ by <a href='https://portfoliopawan29s.web.app/'>Pawan Subedi</a>
+    </p>
+  </footer>
     </div>
   );
 }
