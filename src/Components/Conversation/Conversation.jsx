@@ -3,7 +3,7 @@ import "./conversation.scss";
 import baseURL from "../../api/baseURL";
 import axios from "axios";
 
-function Conversation({ conversation, myId, setCurrentChat, setChatHeading }) {
+function Conversation({ conversation, myId, setCurrentChat, setChatHeading,onSelectUser }) {
   const [user, setUser] = useState(null);
 
   useEffect(() => {
@@ -23,6 +23,7 @@ function Conversation({ conversation, myId, setCurrentChat, setChatHeading }) {
   const changeSates = () => {
     setChatHeading(user.full_Name);
     setCurrentChat(conversation);
+    onSelectUser(user)
   };
 
   return (

@@ -109,6 +109,7 @@ function SignUP() {
               value={full_Name}
               onChange={(e) => setFull_Name(e.target.value)}
               placeholder='Full Name'
+              autoComplete="on"
             />
             <span>{errorState.fullnameError}</span>
             <input
@@ -117,6 +118,7 @@ function SignUP() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder='E-mail'
+              autoComplete="on"
             />
             <span>{errorState.emailError}</span>
             <input
@@ -125,6 +127,7 @@ function SignUP() {
               value={username}
               onChange={(e) => setUsername(e.target.value)}
               placeholder='UserName'
+              autoComplete="on"
             />
             <span>{errorState.usernameError}</span>
             <input
@@ -133,6 +136,7 @@ function SignUP() {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder='password'
+              autoComplete="on"
             />
             <span>{errorState.passwordError}</span>
             <input
@@ -141,6 +145,7 @@ function SignUP() {
               value={confirmPassword}
               onChange={(e) => setConformPassword(e.target.value)}
               placeholder='Confirm Passowrd'
+              autoComplete="on"
             />
             <span>{errorState.matchpasswordError}</span>
             {loading ? (

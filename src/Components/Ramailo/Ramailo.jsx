@@ -33,7 +33,12 @@ const Confirmation = () => {
           });
         }
       };
-
+      const token = JSON.parse(localStorage.getItem("temp"));
+      useEffect(()=>{
+        if (!token){
+          navigate("/")
+        }
+      },[])
     return (
       <div className="ramailo-container">
         {clickYes?<h1 className="I_knew">I knew it Babe 💖</h1>:

@@ -3,6 +3,7 @@ import image from "../../Assets/defaultimg.png";
 import icon from "../../Assets/svg/camera.svg";
 import loop from "../../Assets/svg/loop.svg";
 import send from "../../Assets/svg/send.svg";
+import video_icon from "../../Assets/svg/video_icon.svg"
 import { useNavigate } from "react-router";
 import Message from "../../Components/Message/Message";
 import Loader from "../../Components/Loader/Loader";
@@ -34,6 +35,9 @@ export default function Profile() {
   const [messages, setMessages] = useState([]);
   const [currentChat, setCurrentChat] = useState(null);
   const [strangers, setStrangers] = useState([]);
+  const [friendSocketId, setFriendSocketId] = useState(null);
+  const [selectedUser, setSelectedUser] = useState(null);
+  const [socketUsers, setSocketUsers] = useState([]);
 
   const socket = useRef();
 
@@ -42,18 +46,30 @@ export default function Profile() {
   const scrollRef = useRef();
 
   const [showPicker, setShowPicker] = useState(false);
-  const id = JSON.parse(
-    atob(localStorage.getItem("userInfo").split(".")[1])
-  ).id;
+
+  const token = localStorage.getItem('userInfo');
+  let id
+  if(token){
+    id = JSON.parse(
+      atob(localStorage.getItem("userInfo").split(".")[1])
+    ).id;
+  }
+
 
   const handleEmojiSelect = (emoji) => {
     setNewMessage((prev) => prev + emoji.native); // Append emoji to the message
   };
 
+  useEffect(()=>{
+    if (!token){
+      navigate("/")
+    }
+  },[])
+
   //socket
   useEffect(() => {
-    socket.current = io("http://3.87.12.145:5000");
-    // socket.current = io("https://chat29-api.herokuapp.com");
+    // socket.current = io("https://faith.zapto.org");
+    socket.current = io("http://localhost:8000");
     socket.current.on("getMessage", (data) => {
       setArrivalMessage({
         user: data.senderId,
@@ -66,15 +82,30 @@ export default function Profile() {
     arrivalMessage && currentChat?.members.includes(arrivalMessage.user);
     setMessages((prev) => [...prev, arrivalMessage]);
   }, [arrivalMessage, currentChat]);
+
   useEffect(() => {
     socket.current.emit("addUser", id);
     socket.current.on("getUsers", (users) => {
       setOnlineFriendList(
         friendList.filter((f) => users.some((u) => u.userId === f._id))
       );
+      setSocketUsers(users)
     });
+    
+
   }, [id]);
-  // console.log(onlineFriendList);
+  
+  useEffect(()=>{
+    const friendId = selectedUser?._id;
+      const friend = socketUsers?.find((user) => user?.userId == friendId);
+      if (friend) {
+        setFriendSocketId(friend?.socketId);
+      }
+      else{
+        setFriendSocketId("offline");
+      }
+  },[selectedUser])
+  
   //fetch activities
   useEffect(() => {
     if (localStorage.getItem("userInfo") === null) {
@@ -92,7 +123,9 @@ export default function Profile() {
         console.log(error);
       }
     };
-    fetchMe();
+    if(id){
+      fetchMe();
+    }
   }, [id]);
 
   useEffect(() => {
@@ -105,7 +138,9 @@ export default function Profile() {
         console.log(error);
       }
     };
-    fetchUsers();
+    if(id){
+      fetchUsers();
+    }
   }, [id]);
 
   useEffect(() => {
@@ -120,7 +155,10 @@ export default function Profile() {
         console.log(error);
       }
     };
+    if(id){
     fetchConversations();
+
+    }
   }, [id]);
 
   useEffect(() => {
@@ -146,8 +184,6 @@ export default function Profile() {
   }, [currentChat]);
 
   useEffect(() => {
-    // const friendId = conversation.members.find((user) => user !== myId);
-
     const convId = [];
     conversations.forEach((element) => {
       element.members.filter((m) => convId.push(m));
@@ -248,6 +284,23 @@ export default function Profile() {
     };
   }, [showPicker]);
 
+  const videoCall= ()=>{
+    if(friendSocketId !=="offline"){
+      navigate("/video",{
+        state: {
+          mySocketId: socket.current.id,
+          opponentSocketId: friendSocketId,
+          myUserName: userData.full_Name,
+          opponentUserName: chatHeading
+        }
+      });
+    }
+    else{
+      alert(`${chatHeading} is offline!`)
+    }
+    console.log(friendSocketId)
+  }
+
   return (
     <div className='main__container'>
       {/* <header className="header">
@@ -299,7 +352,7 @@ export default function Profile() {
         <div className='conversation__list__area'>
           {/* <input
             type='text'
-            placeholder='Search for friends'
+            placeholder='Search for friends'`
             className='search__field'
           /> */}
           <span className='your__valentine'>Your Valentines</span>
@@ -311,6 +364,7 @@ export default function Profile() {
                   myId={id}
                   setCurrentChat={setCurrentChat}
                   setChatHeading={setChatHeading}
+                  onSelectUser={setSelectedUser}
                 />
               </div>
             ))}
@@ -323,6 +377,7 @@ export default function Profile() {
           <>
             <div className='chat__header'>
               <h3>{chatHeading}</h3>
+              <img className="video__icon" draggable='false' src={video_icon} alt='friend' onClick={() => videoCall()}/>
             </div>
             <div className='chat__area__content'>
               {!fethching ? (
@@ -366,10 +421,15 @@ export default function Profile() {
             </form>
           </>
         ) : (
-          <span className='noCurrentChat'>
-            {/* Open a Conversation to start chatting */}
-            <img className="cat" src = "https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExZXlrdzltbHkwMnlsYXhuczNhOXAydGJnMnFuaGVmc2hpOGxqMXY1cCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/OW8JhCRLHuwNsctz5s/giphy.gif"/>
-          </span>
+            <div className="background-container">
+              <div className="overlay"></div>
+              <div className="content">
+                <h1>Click your valentines on the left to chat</h1>
+              </div>
+            </div>
+          // <span className='noCurrentChat'>
+          //   Open a Conversation to start chatting
+          // </span>
         )}
       </div>
       {/* allusers */}

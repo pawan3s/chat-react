@@ -15,7 +15,7 @@ const Confirmation = () => {
         localStorage.setItem("userInfo", JSON.stringify(token));
         navigate("/ramailo");
       }
-      else if(date==""){
+      else if(date===""){
         alert("Aha! No skipping please!❤️");
       } 
       else {
@@ -23,7 +23,12 @@ const Confirmation = () => {
         alert("Sorry, dear ❤️, My valentine is waiting 😢");
       }
     };
-
+      useEffect(()=>{
+        if (!token){
+          navigate("/")
+        }
+      },[])
+    
     return (
       <div className="valentine-container">
         <header className="valentine-header">

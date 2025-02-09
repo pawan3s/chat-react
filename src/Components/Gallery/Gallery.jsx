@@ -11,8 +11,12 @@ const Gallery = () => {
           description: "Here is a Small gift for you ❤️, scroll down for more memories ❤️",
         },
         {
-          src: "https://res-console.cloudinary.com/da3akj2d8/thumbnails/v1/image/upload/v1738133054/SU1HXzAyNDdfanYxcjhq/drilldown",
+          src: "https://res.cloudinary.com/da3akj2d8/image/upload/v1738133054/IMG_0247_jv1r8j.jpg",
           description: "Early days, Look how cute we look ❤️❤️❤️",
+        },
+        {
+          src: "https://res.cloudinary.com/da3akj2d8/image/upload/v1739078725/hami/kezea22mbvhzlrwiu5g5.jpg",
+          description: "A memorable vedetar Date❤️",
         },
         {
           src: "https://res.cloudinary.com/da3akj2d8/image/upload/v1738133268/Profile_pictures/IMG_0743_ebozze.jpg",
@@ -21,6 +25,18 @@ const Gallery = () => {
         {
           src: "https://res.cloudinary.com/da3akj2d8/image/upload/v1738133427/Profile_pictures/IMG_9812_mbv1gd.jpg",
           description: "And Finally we look like buda budi ❤️",
+        },
+        {
+          src: "https://res.cloudinary.com/da3akj2d8/image/upload/v1739078725/hami/pjpjy16zsyb0zk93rgoe.jpg",
+          description: "And forever...",
+        },
+        {
+          src: "https://res.cloudinary.com/da3akj2d8/image/upload/v1739078725/hami/glfslsr8zh6f8cn2cvgd.jpg",
+          description: "How sad both of us were...❤️",
+        },
+        {
+          src: "https://res.cloudinary.com/da3akj2d8/image/upload/v1739078725/hami/s3cwaxse4ghoxzwzc5gn.jpg",
+          description: "And last one for today....Cheers........❤️",
         },
       ];
 
@@ -72,7 +88,7 @@ const Gallery = () => {
           >
             {image.description}
           </div>
-          {index==images.length-1?<button type="submit" className="chat-button" onClick={handleClick}>Chat with him ❤️❤️</button>:""}
+          {index===images.length-1?<button type="submit" className="chat-button" onClick={handleClick}>Chat with him ❤️❤️</button>:""}
           
         </div>
       ))}

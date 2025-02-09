@@ -69,6 +69,7 @@ function SignIn() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder='E-mail'
+              autoComplete="on"
             />
             <span>{emailError}</span>
             <input
@@ -77,6 +78,7 @@ function SignIn() {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder='password'
+              autoComplete="on"
             />
             {loading ? (
               <Loader />

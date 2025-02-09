@@ -6,6 +6,7 @@ import Profile from "./Pages/ProfilePage/Profile";
 import Confirmation from "./Components/Confirmation/Confirmation";
 import Gallery from "./Components/Gallery/Gallery";
 import Ramailo from "./Components/Ramailo/Ramailo"
+import VideoChatApp from "./Components/VideoChat";
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
         <Route path='/confirm' element={<Confirmation />} />
         <Route path='/gallery' element={<Gallery />} />
         <Route path='/ramailo' element={<Ramailo />} />
+        <Route path='/video' element={<VideoChatApp />} />
       </Routes>
     </Router>
   );
