@@ -2,11 +2,10 @@
 import React, { useEffect, useState, useRef } from "react";
 import Peer from "simple-peer";
 import styled from "styled-components";
-import { io } from "socket.io-client";
 import { useLocation } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 
-const socket = io("http://localhost:8000");
+import {socket} from "../socket";
 
 const Container = styled.div`
  height: 100vh;
@@ -81,7 +80,7 @@ function VideoChatApp() {
   const location = useLocation();
   const [currentPeer, setCurrentPeer] = useState(null);
 
-  const { mySocketId, opponentSocketId, myUserName, opponentUserName } = location.state || {};
+  const { mySocketId, opponentSocketId, myUserName, opponentUserName} = location.state || {};
   const navigate = useNavigate();
 
   const endCall = () => {
@@ -103,6 +102,8 @@ function VideoChatApp() {
   };
 
   useEffect(() => {
+
+    let isMounted2 = true;
     socket.emit("addUser", mySocketId); //added later
 
     navigator.mediaDevices
@@ -115,10 +116,16 @@ function VideoChatApp() {
       });
 
     socket.on("hey", (data) => {
-      console.log("Incoming call from:", data.from);
-      setReceivingCall(true);
-      setCaller(data.from);
-      setCallerSignal(data.signal);
+      if(isMounted2){
+        console.log("Incoming call from:", data.from);
+        setReceivingCall(true);
+        setCaller(data.from);
+        setCallerSignal(data.signal);
+      }
+      return()=>{
+        isMounted2 = false
+        socket.off("hey")
+      }
     });
   }, []);
 

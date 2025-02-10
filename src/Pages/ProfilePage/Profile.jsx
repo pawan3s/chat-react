@@ -7,8 +7,6 @@ import video_icon from "../../Assets/svg/video_icon.svg"
 import { useNavigate } from "react-router";
 import Message from "../../Components/Message/Message";
 import Loader from "../../Components/Loader/Loader";
-// import Button from "@mui/material/Button";
-// import Modal from "@mui/material/Modal";
 import "./Profile.scss";
 
 //emojis
@@ -19,7 +17,9 @@ import baseURL from "../../api/baseURL";
 import axios from "axios";
 import Conversation from "../../Components/Conversation/Conversation";
 import { useRef } from "react";
-import { io } from "socket.io-client";
+
+import { socket } from "../../socket";
+
 
 export default function Profile() {
   // const [open, setOpen] = useState(false);
@@ -39,7 +39,7 @@ export default function Profile() {
   const [selectedUser, setSelectedUser] = useState(null);
   const [socketUsers, setSocketUsers] = useState([]);
 
-  const socket = useRef();
+  // const socket = useRef();
 
   const [chatHeading, setChatHeading] = useState("");
   const [fethching, setFetching] = useState(false);
@@ -68,13 +68,20 @@ export default function Profile() {
 
   //socket
   useEffect(() => {
-    // socket.current = io("https://faith.zapto.org");
-    socket.current = io("http://localhost:8000");
-    socket.current.on("getMessage", (data) => {
-      setArrivalMessage({
-        user: data.senderId,
-        message: data.message,
-      });
+    let isgetMsgMounted = true;
+
+    socket.on("getMessage", (data) => {
+      if(isgetMsgMounted){
+        setArrivalMessage({
+          user: data.senderId,
+          message: data.message,
+        });
+      }
+      return() =>{
+        isgetMsgMounted = false;
+        socket.off("getMessage")
+      }
+
     });
   }, []);
 
@@ -84,14 +91,22 @@ export default function Profile() {
   }, [arrivalMessage, currentChat]);
 
   useEffect(() => {
-    socket.current.emit("addUser", id);
-    socket.current.on("getUsers", (users) => {
-      setOnlineFriendList(
-        friendList.filter((f) => users.some((u) => u.userId === f._id))
-      );
-      setSocketUsers(users)
+    let isMounted = true; 
+
+    socket.emit("addUser", id);
+
+    socket.on("getUsers", (users) => {
+      if(isMounted){
+        setOnlineFriendList(
+          friendList.filter((f) => users.some((u) => u.userId === f._id))
+        );
+        setSocketUsers(users)
+      }
     });
-    
+    return() =>{
+      isMounted = false;
+      socket.off("getUsers")
+    }
 
   }, [id]);
   
@@ -220,7 +235,7 @@ export default function Profile() {
     };
     if (newMessage !== "") {
       const receiverId = currentChat.members.find((member) => member !== id);
-      socket.current.emit("sendMessage", {
+      socket.emit("sendMessage", {
         senderId: id,
         receiverId: receiverId,
         message: newMessage,
@@ -288,7 +303,7 @@ export default function Profile() {
     if(friendSocketId !=="offline"){
       navigate("/video",{
         state: {
-          mySocketId: socket.current.id,
+          mySocketId: socket.id,
           opponentSocketId: friendSocketId,
           myUserName: userData.full_Name,
           opponentUserName: chatHeading
